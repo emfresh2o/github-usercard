@@ -32,7 +32,7 @@ axios.get("https://api.github.com/users/emfresh2o").then(response=>{
  })
 
 .catch(error => {
-  console.log("Missing follower data", error)
+  console.log("Missing user data", error)
 });
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -93,7 +93,7 @@ function gitUserCard (item){
         newFollowing = document.createElement("p"),
         newBio = document.createElement("p");
   
-  // Apply attribute
+  // Apply image attribute
   newImage.src = item.data.avatar_url;
 
   // Apply text content
