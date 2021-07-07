@@ -1,9 +1,17 @@
+import Axios from "axios";
+/*
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-
+let cards = document.querySelector('.card');
+axios.get ("https://api.github.com/users/emfresh2o").then (response => {
+  cards.appendChild(GitUserCard(response.data));
+})
+.catch(error => {
+  console.log(error);
+})
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -11,12 +19,21 @@
 
     Skip to STEP 3.
 */
-
+const entryPoint = document.querySelector(".cards");
+console.log(entryPoint);
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+axios.get("https://api.github.com/users/emfresh2o").then(response=>{
+  console.log(response)
+   const newGitUser = gitUserCard(response);
+   entryPoint.append(newGitUser);
+ })
 
+.catch(error => {
+  console.log("Missing user data", error)
+});
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -28,7 +45,19 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [ "tetondan","dustinmyers","justsml","luishrd","bigknell"];
+followersArray.forEach(element => {
+  let newUserCards = `https://api.github.com/users/${element}`;
+  axios.get(newUserCards).then(response=>{
+  console.log(response)
+   const newGitUser = gitUserCard(response);
+   entryPoint.append(newGitUser);
+ })
+
+.catch(error => {
+  console.log("Missing follower data", error)
+});
+})
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,7 +78,52 @@ const followersArray = [];
       </div>
     </div>
 */
+function gitUserCard (item){
 
+// Created new elements
+  const newCard = document.createElement("div"),
+        newImage = document.createElement("img"),
+        newCardInfo = document.createElement("div"),
+        newUser = document.createElement("h3"),
+        newUsername = document.createElement("p"),
+        newLocation = document.createElement("p"),
+        newProfile = document.createElement("p"),
+        newUserAddress = document.createElement("a"),
+        newFollower = document.createElement("p"),
+        newFollowing = document.createElement("p"),
+        newBio = document.createElement("p");
+  
+  // Apply image attribute
+  newImage.src = item.data.avatar_url;
+
+  // Apply text content
+  newUser.textContent = item.data.name;
+  newUsername.textContent = item.data.login;
+  newLocation.textContent = "Location: " + item.data.location;
+  newFollower.textContent = "Followers: "+ item.data.followers;
+  newFollowing.textContent = "Following: " + item.data.following;
+  newBio.textContent = "Bio: " +  item.data.bio;
+
+  //Apply classes
+  newCard.classList.add("card");
+  newCardInfo.classList.add("card-info");
+  newUser.classList.add("name");
+  newUsername.classList.add("username");
+
+  //Nested elements
+  newCard.append(newImage);
+  newCard.append(newCardInfo);
+  newCardInfo.append(newUser);
+  newCardInfo.append(newUsername);
+  newCardInfo.append(newLocation);
+  newCardInfo.append(newProfile);
+  newProfile.append(newUserAddress);
+  newCardInfo.append(newFollower);
+  newCardInfo.append(newFollowing);
+  newCardInfo.append(newBio);
+
+  return newCard
+}
 /*
   List of LS Instructors Github username's:
     tetondan
